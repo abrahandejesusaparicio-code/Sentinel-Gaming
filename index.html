@@ -12,10 +12,13 @@
       --bg-1:#060606; --bg-2:#0b0b0b; --card:#0f0f10; --muted:rgba(255,255,255,0.55);
       --accent:#FFD300; --accent-08:rgba(255,211,0,0.08); --accent-06:rgba(255,211,0,0.06);
     }
+    html { scroll-behavior: smooth; } /* smooth scroll */
     html,body{height:100%}
     body{background:linear-gradient(180deg,var(--bg-1),var(--bg-2));color:#fff;font-family:Inter,system-ui,Arial,sans-serif; overflow-x:hidden}
     .glow { box-shadow: 0 6px 30px -10px rgba(255,211,0,0.08), 0 0 30px rgba(255,211,0,0.03) inset; }
     .accent-text{ color: var(--accent); }
+
+    /* Button diagonal sweep (kept) */
     .btn-accent{
       position:relative;
       overflow:hidden;
@@ -40,7 +43,7 @@
     .soft-card{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); }
     .accent-overlay{ background: radial-gradient(circle at 20% 10%, var(--accent-06), transparent 35%); }
 
-    /* --- Animations --- */
+    /* --- Entrance Animations --- */
     @keyframes fadeUp { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
     @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
     @keyframes slideInLeft { from{opacity:0; transform:translateX(-40px);} to{opacity:1; transform:translateX(0);} }
@@ -61,27 +64,81 @@
     .hover-overlay {
       position:absolute;
       inset:0;
-      background:rgba(0,0,0,0.65);
+      background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.75));
       opacity:0;
       display:flex;
       align-items:center;
       justify-content:center;
-      text-align:center;
-      padding:1rem;
-      transition:opacity .4s ease;
+      text-align:left;
+      padding:1.25rem;
+      transition:opacity .36s ease, transform .36s ease;
+      transform: translateY(6px);
+      color: #fff;
+      pointer-events: none; /* overlay not interactive; button remains clickable below */
+    }
+    .hover-overlay .inner {
+      max-height: 80%;
+      overflow: auto;
+      width: 100%;
+    }
+    .hover-overlay h4 {
+      margin: 0 0 .4rem 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .hover-overlay p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height:1.35;
+      color: rgba(255,255,255,0.95);
     }
     .product-card:hover .hover-overlay,
-    .banner:hover .hover-overlay { opacity:1; }
+    .banner:hover .hover-overlay { opacity:1; transform: translateY(0); }
 
-    /* Showcase hover */
-    .banner{ position:relative; transition: transform .5s ease; }
-    .banner:hover{ transform: scale(1.03); }
+    /* Showcase hover - slightly bigger effect */
+    .banner{ position:relative; transition: transform .45s ease, box-shadow .45s ease; }
+    .banner:hover{ transform: scale(1.03); box-shadow: 0 12px 40px rgba(255,211,0,0.10); }
+
+    /* search box */
+    .header-search {
+      flex: 1 1 360px;
+      display:flex;
+      justify-content:center;
+      padding: 0 1rem;
+    }
+    .header-search input {
+      width: 380px;
+      max-width: 48vw;
+      min-width: 180px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #fff;
+      padding: .6rem .9rem;
+      border-radius: 10px;
+      font-size: .95rem;
+      outline: none;
+      transition: box-shadow .28s ease, border-color .28s ease, transform .18s ease;
+      backdrop-filter: blur(4px);
+    }
+    .header-search input::placeholder { color: rgba(255,255,255,0.42); }
+    .header-search input:focus {
+      box-shadow: 0 6px 30px rgba(255,211,0,0.06), 0 0 12px rgba(255,211,0,0.04) inset;
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    /* smaller screens adjustments */
+    @media (max-width: 900px) {
+      .header-search { display: none; } /* hide search on small screens */
+    }
   </style>
 </head>
 <body>
   <!-- Header -->
-  <header class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between fade-in">
-    <div class="flex items-center gap-3">
+  <header class="max-w-7xl mx-auto px-6 py-6 flex items-center gap-4 fade-in">
+    <!-- left: logo -->
+    <div class="flex items-center gap-3 flex-none">
       <div class="w-10 h-10 rounded-md flex items-center justify-center glow" style="background: linear-gradient(180deg, rgba(255,211,0,0.12), rgba(255,211,0,0.06))">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
           <path d="M12 2L13.8 8.6L20.8 9.4L15.6 13.9L17 20.6L12 17.5L7 20.6L8.4 13.9L3.2 9.4L10.2 8.6L12 2Z" stroke="white" stroke-opacity="0.9" stroke-width="0.6"/>
@@ -93,7 +150,13 @@
       </div>
     </div>
 
-    <nav class="hidden md:flex items-center gap-6 text-sm text-[rgba(255,255,255,0.7)]">
+    <!-- center: search -->
+    <div class="header-search">
+      <input type="search" placeholder="Search gear..." aria-label="Search products">
+    </div>
+
+    <!-- right: nav -->
+    <nav class="hidden md:flex items-center gap-6 text-sm text-[rgba(255,255,255,0.7)] flex-none">
       <a href="#products" class="hover:text-white">Products</a>
       <a href="#collections" class="hover:text-white">Collections</a>
       <a href="#community" class="hover:text-white">Community</a>
@@ -101,7 +164,8 @@
       <button class="ml-4 px-3 py-2 rounded-md btn-accent">Sign In</button>
     </nav>
 
-    <div class="md:hidden">
+    <!-- mobile hamburger -->
+    <div class="md:hidden ml-auto">
       <button id="hamburger" class="p-2 rounded-md bg-[rgba(255,255,255,0.02)]">☰</button>
     </div>
   </header>
@@ -158,7 +222,16 @@
         <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
           <div class="aspect-[16/10] flex items-center justify-center relative">
             <img src="pcitures/mice_for_sentinel_gaming_website.jpg" alt="Vector X7" class="object-cover w-full h-full"/>
-            <div class="hover-overlay text-sm">Lightning-fast sensor, feather-light frame.</div>
+            <div class="hover-overlay">
+              <div class="inner">
+                <h4>Vector X7</h4>
+                <p>
+                  The Vector X7 is engineered for competitive gameplay, featuring an ultra-light, feather-light frame for rapid, fatigue-free movement.
+                  It's equipped with a lightning-fast sensor, boasting an impressive 18,000 DPI resolution, ensuring pixel-perfect accuracy and instantaneous
+                  response for every flick and aim.
+                </p>
+              </div>
+            </div>
           </div>
           <div class="p-5">
             <div class="flex items-center justify-between">
@@ -177,7 +250,16 @@
         <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
           <div class="aspect-[16/10] flex items-center justify-center relative">
             <img src="pcitures/Keyboard_picture_for_sentinel_gaming.jpeg" alt="Nova Pro" class="object-cover w-full h-full"/>
-            <div class="hover-overlay text-sm">Engineered for precision typing & play.</div>
+            <div class="hover-overlay">
+              <div class="inner">
+                <h4>Nova Pro</h4>
+                <p>
+                  The Nova Pro is a high-performance mechanical keyboard built for precision and style. It features satisfyingly responsive tactile switches
+                  for a comfortable and deliberate typing or gaming experience. The vibrant per-key RGB lighting allows for deep customization and a dynamic,
+                  immersive aesthetic.
+                </p>
+              </div>
+            </div>
           </div>
           <div class="p-5">
             <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">Nova Pro</h3><span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">NEW</span></div>
@@ -190,7 +272,16 @@
         <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
           <div class="aspect-[16/10] flex items-center justify-center relative">
             <img src="pcitures/headphones_picture_for_sentinel_gaming.jpg" alt="Pulsehead II" class="object-cover w-full h-full"/>
-            <div class="hover-overlay text-sm">Immersive sound, built for focus.</div>
+            <div class="hover-overlay">
+              <div class="inner">
+                <h4>Pulsehead II</h4>
+                <p>
+                  Step into the game with the Pulsehead II headset, delivering rich, immersive spatial audio that allows you to pinpoint enemy locations
+                  and environmental cues with superior accuracy. Communication is crystal clear thanks to the integrated, high-quality noise-cancellation
+                  microphone, ensuring your team hears only you, even in the loudest environments.
+                </p>
+              </div>
+            </div>
           </div>
           <div class="p-5">
             <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">Pulsehead II</h3><span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">HOT</span></div>
@@ -203,7 +294,16 @@
         <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
           <div class="aspect-[16/10] flex items-center justify-center relative">
             <img src="pcitures/Mouse_pad_sentinel_gaming.jpg" alt="Flux Pad" class="object-cover w-full h-full"/>
-            <div class="hover-overlay text-sm">Glide into every battle with control.</div>
+            <div class="hover-overlay">
+              <div class="inner">
+                <h4>Flux Pad (XL)</h4>
+                <p>
+                  The Flux Pad (XL) is the foundational element for smooth, consistent gameplay. Its seamless glide and custom cloth surface is optimized
+                  for both speed and control, making sure your mouse movements are effortless and precise. The extra-large size provides ample room for
+                  low-DPI mouse swings and keyboard placement.
+                </p>
+              </div>
+            </div>
           </div>
           <div class="p-5">
             <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">Flux Pad (XL)</h3><span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">ESSENTIAL</span></div>
@@ -217,7 +317,12 @@
     <!-- Showcase / Banner -->
     <section id="collections" class="mt-16 grid md:grid-cols-2 gap-6 items-stretch">
       <div class="banner rounded-2xl overflow-hidden soft-card relative p-8 flex flex-col justify-end slide-left" style="background-image:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.6)), url('pcitures/Vantage_Black_Edition.jpg'); background-size:cover; background-position:center; min-height:260px;">
-        <div class="hover-overlay text-sm">Limited stock — premium finishes await.</div>
+        <div class="hover-overlay">
+          <div class="inner">
+            <h4>Vantage Black Edition</h4>
+            <p>Limited stock — premium finishes await.</p>
+          </div>
+        </div>
         <div class="text-xs text-[rgba(255,255,255,0.6)]">LIMITED DROP</div>
         <h3 class="text-2xl font-bold">Vantage Black Edition</h3>
         <p class="text-sm text-[rgba(255,255,255,0.65)] max-w-md mt-2">A refined aesthetic, reduced RGB, premium materials and tactile finishes for a discreet pro setup.</p>
@@ -225,7 +330,12 @@
       </div>
 
       <div class="banner rounded-2xl overflow-hidden soft-card p-8 flex flex-col justify-end slide-right" style="background-image:url('pcitures/join_the_squad.jpg'); background-size:cover; background-position:center; min-height:260px;">
-        <div class="hover-overlay text-sm">Unite, share, and grow with Vantage.</div>
+        <div class="hover-overlay">
+          <div class="inner">
+            <h4>Community</h4>
+            <p>Unite, share, and grow with Vantage.</p>
+          </div>
+        </div>
         <div class="text-xs text-[rgba(255,255,255,0.6)]">COMMUNITY</div>
         <h3 class="text-2xl font-bold">Join the Squad</h3>
         <p class="text-sm text-[rgba(255,255,255,0.65)] max-w-md mt-2">Share clips, setup photos, and feedback. Get early access to drops and beta firmware.</p>
@@ -234,5 +344,27 @@
     </section>
 
     <!-- Footer -->
-    <footer class="mt-20 border-t border-[rgba(255,255,255,0.04)] pt-8 pb-12 text-sm text-[rgba(255,255,255,0.55)] fade-in">
-      <div class="flex flex-col md:flex-row md:justify-between gap-6 max-w-7xl mx-auto px
+    <footer id="support" class="mt-20 border-t border-[rgba(255,255,255,0.04)] pt-8 pb-12 text-sm text-[rgba(255,255,255,0.55)] fade-in">
+      <div class="flex flex-col md:flex-row md:justify-between gap-6 max-w-7xl mx-auto px-6">
+        <div class="space-y-2">
+          <div class="font-bold">VANTAGE</div>
+          <div>Performance Gear • © 2025 Vantage Labs</div>
+        </div>
+        <div class="flex gap-6">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Support</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Simple interactions: mobile menu toggle and fake buy modal
+    document.getElementById('hamburger')?.addEventListener('click', ()=> alert('Mobile menu placeholder'));
+    function buy(name){
+      alert('Added to cart (mock): ' + name + '\n(This is a prototype demo)');
+    }
+  </script>
+</body>
+</html>
