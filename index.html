@@ -74,48 +74,49 @@
       transition:opacity .36s ease, transform .36s ease;
       transform: translateY(6px);
       color: #fff;
-      pointer-events: none; /* overlay not interactive; button remains clickable below */
+      pointer-events: none;
     }
-    /* Thin, animated scrollbar for product overlays */
     .hover-overlay .inner {
       max-height: 80%;
       overflow: auto;
       width: 100%;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,0) transparent; /* hidden by default */
-      transition: scrollbar-color .3s ease;
     }
-
-    .hover-overlay .inner::-webkit-scrollbar { width: 6px; }
-    .hover-overlay .inner::-webkit-scrollbar-track { background: transparent; }
-    .hover-overlay .inner::-webkit-scrollbar-thumb {
-      background-color: rgba(255,255,255,0);
-      border-radius: 3px;
-      transition: background-color .3s ease;
+    .hover-overlay h4 {
+      margin: 0 0 .4rem 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
     }
-
-    .hover-overlay .inner:hover { scrollbar-color: rgba(255,255,255,0.25) transparent; }
-    .hover-overlay .inner:hover::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.25); }
-    .hover-overlay .inner:active::-webkit-scrollbar-thumb,
-    .hover-overlay .inner:focus::-webkit-scrollbar-thumb { background-color: rgba(255,211,0,0.4); }
-
-    .hover-overlay h4 { margin: 0 0 .4rem 0; font-size: 1rem; font-weight: 700; color: #fff; }
-    .hover-overlay p { margin: 0; font-size: 0.9rem; line-height:1.35; color: rgba(255,255,255,0.95); }
+    .hover-overlay p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height:1.35;
+      color: rgba(255,255,255,0.95);
+    }
     .product-card:hover .hover-overlay,
     .banner:hover .hover-overlay { opacity:1; transform: translateY(0); }
 
-    /* Showcase hover - slightly bigger effect */
     .banner{ position:relative; transition: transform .45s ease, box-shadow .45s ease; }
     .banner:hover{ transform: scale(1.03); box-shadow: 0 12px 40px rgba(255,211,0,0.10); }
 
-    /* search box */
-    .header-search { flex: 1 1 360px; display:flex; justify-content:center; padding: 0 1rem; }
+    .header-search {
+      flex: 1 1 360px;
+      display:flex;
+      justify-content:center;
+      padding: 0 1rem;
+    }
     .header-search input {
-      width: 380px; max-width: 48vw; min-width: 180px;
+      width: 380px;
+      max-width: 48vw;
+      min-width: 180px;
       background: rgba(255,255,255,0.02);
       border: 1px solid rgba(255,255,255,0.06);
-      color: #fff; padding: .6rem .9rem; border-radius: 10px; font-size: .95rem;
-      outline: none; transition: box-shadow .28s ease, border-color .28s ease, transform .18s ease;
+      color: #fff;
+      padding: .6rem .9rem;
+      border-radius: 10px;
+      font-size: .95rem;
+      outline: none;
+      transition: box-shadow .28s ease, border-color .28s ease, transform .18s ease;
       backdrop-filter: blur(4px);
     }
     .header-search input::placeholder { color: rgba(255,255,255,0.42); }
@@ -125,7 +126,6 @@
       transform: translateY(-1px);
     }
 
-    /* smaller screens adjustments */
     @media (max-width: 900px) {
       .header-search { display: none; }
     }
@@ -133,57 +133,70 @@
 </head>
 <body>
   <!-- Header -->
-  <!-- ... your header code unchanged ... -->
+  <!-- (your header, hero, etc. are unchanged) -->
 
   <main class="max-w-7xl mx-auto px-6 pb-20">
-    <!-- Hero -->
-    <!-- ... hero section unchanged ... -->
-
     <!-- Products grid -->
     <section id="products" class="mt-12 fade-up">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold">Featured Products</h2>
-        <div class="text-sm text-[rgba(255,255,255,0.55)]">Hand-picked for precision & comfort</div>
-      </div>
-
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Example with sidebar trigger -->
+        
+        <!-- Vector X7 -->
         <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
           <div class="aspect-[16/10] flex items-center justify-center relative">
             <img src="pcitures/mice_for_sentinel_gaming_website.jpg" alt="Vector X7" class="object-cover w-full h-full"/>
             <div class="hover-overlay">
               <div class="inner">
                 <h4>Vector X7</h4>
-                <p>
-                  The Vector X7 is engineered for competitive gameplay, featuring an ultra-light, feather-light frame...
-                </p>
+                <p>The Vector X7 is engineered for competitive gameplay, featuring an ultra-light frame...</p>
                 <button onclick="openSidebar('Vector X7')" class="mt-2 text-xs underline hover:text-[var(--accent)]">More Info →</button>
               </div>
             </div>
           </div>
-          <div class="p-5">
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-semibold">Vector X7</h3>
-              <span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">FEATURED</span>
-            </div>
-            <p class="text-xs text-[rgba(255,255,255,0.6)]">Ultra-light, 16000 DPI sensor</p>
-            <div class="flex items-center justify-between mt-2">
-              <div class="font-bold">$129</div>
-              <button class="px-3 py-2 rounded-md btn-accent text-sm font-medium" onclick="buy('Vector X7')">Buy</button>
+        </article>
+
+        <!-- Nova Pro -->
+        <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
+          <div class="aspect-[16/10] flex items-center justify-center relative">
+            <img src="pcitures/Keyboard_picture_for_sentinel_gaming.jpeg" alt="Nova Pro" class="object-cover w-full h-full"/>
+            <div class="hover-overlay">
+              <div class="inner">
+                <h4>Nova Pro</h4>
+                <p>The Nova Pro is a high-performance mechanical keyboard built for precision and style...</p>
+                <button onclick="openSidebar('Nova Pro')" class="mt-2 text-xs underline hover:text-[var(--accent)]">More Info →</button>
+              </div>
             </div>
           </div>
         </article>
 
-        <!-- Repeat for Nova Pro, Pulsehead II, Flux Pad (each gets a More Info button in overlay) -->
-        <!-- ... keep your original product markup, just add the More Info button like above ... -->
+        <!-- Pulsehead II -->
+        <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
+          <div class="aspect-[16/10] flex items-center justify-center relative">
+            <img src="pcitures/headphones_picture_for_sentinel_gaming.jpg" alt="Pulsehead II" class="object-cover w-full h-full"/>
+            <div class="hover-overlay">
+              <div class="inner">
+                <h4>Pulsehead II</h4>
+                <p>Step into the game with the Pulsehead II headset, delivering rich, immersive spatial audio...</p>
+                <button onclick="openSidebar('Pulsehead II')" class="mt-2 text-xs underline hover:text-[var(--accent)]">More Info →</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Flux Pad -->
+        <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
+          <div class="aspect-[16/10] flex items-center justify-center relative">
+            <img src="pcitures/Mouse_pad_sentinel_gaming.jpg" alt="Flux Pad" class="object-cover w-full h-full"/>
+            <div class="hover-overlay">
+              <div class="inner">
+                <h4>Flux Pad (XL)</h4>
+                <p>The Flux Pad (XL) is the foundational element for smooth, consistent gameplay...</p>
+                <button onclick="openSidebar('Flux Pad (XL)')" class="mt-2 text-xs underline hover:text-[var(--accent)]">More Info →</button>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
-
-    <!-- Showcase / Banner -->
-    <!-- ... unchanged ... -->
-
-    <!-- Footer -->
-    <!-- ... unchanged ... -->
   </main>
 
   <!-- Sidebar Panel -->
@@ -199,13 +212,9 @@
   </div>
 
   <script>
-    // Simple interactions: mobile menu toggle and fake buy modal
     document.getElementById('hamburger')?.addEventListener('click', ()=> alert('Mobile menu placeholder'));
-    function buy(name){
-      alert('Added to cart (mock): ' + name + '\n(This is a prototype demo)');
-    }
+    function buy(name){ alert('Added to cart (mock): ' + name + '\n(This is a prototype demo)'); }
 
-    // Sidebar functions
     function openSidebar(product) {
       const sidebar = document.getElementById("productSidebar");
       const title = document.getElementById("sidebarTitle");
@@ -213,22 +222,10 @@
       const buyBtn = document.getElementById("sidebarBuy");
 
       const products = {
-        "Vector X7": {
-          desc: "The Vector X7 is engineered for competitive gameplay, featuring an ultra-light, feather-light frame for rapid, fatigue-free movement. It's equipped with a lightning-fast sensor, boasting an impressive 18,000 DPI resolution, ensuring pixel-perfect accuracy and instantaneous response for every flick and aim.",
-          price: "$129"
-        },
-        "Nova Pro": {
-          desc: "The Nova Pro is a high-performance mechanical keyboard built for precision and style. It features satisfyingly responsive tactile switches for a comfortable and deliberate typing or gaming experience. The vibrant per-key RGB lighting allows for deep customization and a dynamic, immersive aesthetic.",
-          price: "$189"
-        },
-        "Pulsehead II": {
-          desc: "Step into the game with the Pulsehead II headset, delivering rich, immersive spatial audio that allows you to pinpoint enemy locations and environmental cues with superior accuracy. Communication is crystal clear thanks to the integrated, high-quality noise-cancellation microphone, ensuring your team hears only you, even in the loudest environments.",
-          price: "$149"
-        },
-        "Flux Pad (XL)": {
-          desc: "The Flux Pad (XL) is the foundational element for smooth, consistent gameplay. Its seamless glide and custom cloth surface is optimized for both speed and control, making sure your mouse movements are effortless and precise. The extra-large size provides ample room for low-DPI mouse swings and keyboard placement.",
-          price: "$49"
-        }
+        "Vector X7": { desc: "The Vector X7 is engineered for competitive gameplay...", price: "$129" },
+        "Nova Pro": { desc: "The Nova Pro is a high-performance mechanical keyboard...", price: "$189" },
+        "Pulsehead II": { desc: "Step into the game with the Pulsehead II headset...", price: "$149" },
+        "Flux Pad (XL)": { desc: "The Flux Pad (XL) is the foundational element...", price: "$49" }
       };
 
       title.textContent = product;
@@ -237,7 +234,6 @@
 
       sidebar.classList.remove("translate-x-full");
     }
-
     function closeSidebar() {
       document.getElementById("productSidebar").classList.add("translate-x-full");
     }
