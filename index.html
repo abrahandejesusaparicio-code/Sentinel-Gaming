@@ -57,8 +57,24 @@
     .product-card img{ transition: transform .5s ease; }
     .product-card:hover img{ transform: scale(1.05); }
 
+    /* Overlay for products and banners */
+    .hover-overlay {
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.65);
+      opacity:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:1rem;
+      transition:opacity .4s ease;
+    }
+    .product-card:hover .hover-overlay,
+    .banner:hover .hover-overlay { opacity:1; }
+
     /* Showcase hover */
-    .banner{ transition: transform .5s ease; }
+    .banner{ position:relative; transition: transform .5s ease; }
     .banner:hover{ transform: scale(1.03); }
   </style>
 </head>
@@ -140,8 +156,9 @@
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Vector X7 -->
         <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
-          <div class="aspect-[16/10] flex items-center justify-center">
+          <div class="aspect-[16/10] flex items-center justify-center relative">
             <img src="pcitures/mice_for_sentinel_gaming_website.jpg" alt="Vector X7" class="object-cover w-full h-full"/>
+            <div class="hover-overlay text-sm">Lightning-fast sensor, feather-light frame.</div>
           </div>
           <div class="p-5">
             <div class="flex items-center justify-between">
@@ -158,8 +175,9 @@
 
         <!-- Nova Pro -->
         <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
-          <div class="aspect-[16/10] flex items-center justify-center">
+          <div class="aspect-[16/10] flex items-center justify-center relative">
             <img src="pcitures/Keyboard_picture_for_sentinel_gaming.jpeg" alt="Nova Pro" class="object-cover w-full h-full"/>
+            <div class="hover-overlay text-sm">Engineered for precision typing & play.</div>
           </div>
           <div class="p-5">
             <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">Nova Pro</h3><span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">NEW</span></div>
@@ -170,8 +188,9 @@
 
         <!-- Pulsehead II -->
         <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
-          <div class="aspect-[16/10] flex items-center justify-center">
+          <div class="aspect-[16/10] flex items-center justify-center relative">
             <img src="pcitures/headphones_picture_for_sentinel_gaming.jpg" alt="Pulsehead II" class="object-cover w-full h-full"/>
+            <div class="hover-overlay text-sm">Immersive sound, built for focus.</div>
           </div>
           <div class="p-5">
             <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">Pulsehead II</h3><span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">HOT</span></div>
@@ -182,8 +201,9 @@
 
         <!-- Flux Pad -->
         <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
-          <div class="aspect-[16/10] flex items-center justify-center">
+          <div class="aspect-[16/10] flex items-center justify-center relative">
             <img src="pcitures/Mouse_pad_sentinel_gaming.jpg" alt="Flux Pad" class="object-cover w-full h-full"/>
+            <div class="hover-overlay text-sm">Glide into every battle with control.</div>
           </div>
           <div class="p-5">
             <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">Flux Pad (XL)</h3><span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">ESSENTIAL</span></div>
@@ -197,6 +217,7 @@
     <!-- Showcase / Banner -->
     <section id="collections" class="mt-16 grid md:grid-cols-2 gap-6 items-stretch">
       <div class="banner rounded-2xl overflow-hidden soft-card relative p-8 flex flex-col justify-end slide-left" style="background-image:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.6)), url('pcitures/Vantage_Black_Edition.jpg'); background-size:cover; background-position:center; min-height:260px;">
+        <div class="hover-overlay text-sm">Limited stock — premium finishes await.</div>
         <div class="text-xs text-[rgba(255,255,255,0.6)]">LIMITED DROP</div>
         <h3 class="text-2xl font-bold">Vantage Black Edition</h3>
         <p class="text-sm text-[rgba(255,255,255,0.65)] max-w-md mt-2">A refined aesthetic, reduced RGB, premium materials and tactile finishes for a discreet pro setup.</p>
@@ -204,6 +225,7 @@
       </div>
 
       <div class="banner rounded-2xl overflow-hidden soft-card p-8 flex flex-col justify-end slide-right" style="background-image:url('pcitures/join_the_squad.jpg'); background-size:cover; background-position:center; min-height:260px;">
+        <div class="hover-overlay text-sm">Unite, share, and grow with Vantage.</div>
         <div class="text-xs text-[rgba(255,255,255,0.6)]">COMMUNITY</div>
         <h3 class="text-2xl font-bold">Join the Squad</h3>
         <p class="text-sm text-[rgba(255,255,255,0.65)] max-w-md mt-2">Share clips, setup photos, and feedback. Get early access to drops and beta firmware.</p>
@@ -213,25 +235,4 @@
 
     <!-- Footer -->
     <footer class="mt-20 border-t border-[rgba(255,255,255,0.04)] pt-8 pb-12 text-sm text-[rgba(255,255,255,0.55)] fade-in">
-      <div class="flex flex-col md:flex-row md:justify-between gap-6 max-w-7xl mx-auto px-6">
-        <div class="space-y-2">
-          <div class="font-bold">VANTAGE</div>
-          <div>Performance Gear • © 2025 Vantage Labs</div>
-        </div>
-        <div class="flex gap-6">
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Support</a>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <script>
-    document.getElementById('hamburger')?.addEventListener('click', ()=> alert('Mobile menu placeholder'));
-    function buy(name){
-      alert('Added to cart (mock): ' + name + '\n(This is a prototype demo)');
-    }
-  </script>
-</body>
-</html>
+      <div class="flex flex-col md:flex-row md:justify-between gap-6 max-w-7xl mx-auto px
