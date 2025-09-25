@@ -75,6 +75,22 @@
       transform: translateY(6px);
       color: #fff;
       pointer-events: none; /* overlay not interactive; button remains clickable below */
+
+     /* Fix banner buttons so they behave like product buttons */
+      .banner .hover-overlay {
+         pointer-events: none; /* overlay itself doesn't block clicks */
+}
+
+      .banner .hover-overlay .inner {
+        pointer-events: auto; /* scrolling text still works */
+}
+
+        .banner a {
+         position: relative;
+        z-index: 2; /* buttons above overlay */
+}
+
+      
     }
     .hover-overlay .inner {
       max-height: 80%;
