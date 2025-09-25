@@ -76,10 +76,43 @@
       color: #fff;
       pointer-events: none; /* overlay not interactive; button remains clickable below */
     }
-    .hover-overlay .inner {
-      max-height: 80%;
-      overflow: auto;
-      width: 100%;
+    ./* Thin, animated scrollbar for product overlays */
+.hover-overlay .inner {
+  max-height: 80%;
+  overflow: auto;
+  width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0) transparent; /* hidden by default */
+  transition: scrollbar-color .3s ease;
+}
+
+/* Chrome / Edge / Safari */
+.hover-overlay .inner::-webkit-scrollbar {
+  width: 6px;
+}
+.hover-overlay .inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+.hover-overlay .inner::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0);
+  border-radius: 3px;
+  transition: background-color .3s ease;
+}
+
+/* Show faint scrollbar on hover */
+.hover-overlay .inner:hover {
+  scrollbar-color: rgba(255,255,255,0.25) transparent;
+}
+.hover-overlay .inner:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.25);
+}
+
+/* Neon accent while dragging/scrolling */
+.hover-overlay .inner:active::-webkit-scrollbar-thumb,
+.hover-overlay .inner:focus::-webkit-scrollbar-thumb {
+  background-color: rgba(255,211,0,0.4);
+}
+
     }
     .hover-overlay h4 {
       margin: 0 0 .4rem 0;
