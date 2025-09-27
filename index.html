@@ -1,371 +1,409 @@
 <html lang="en">
   <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Vantage — Performance Gear</title>
-  <meta name="description" content="Sleek, dark shop concept with neon-yellow accents." />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Vantage — Performance Gear</title>
+    <meta name="description" content="Sleek, dark shop concept with neon-yellow accents." />
 
-  <!-- Tailwind Play CDN (for quick prototyping) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root{
-      --bg-1:#060606; --bg-2:#0b0b0b; --card:#0f0f10; --muted:rgba(255,255,255,0.55);
-      --accent:#FFD300; --accent-08:rgba(255,211,0,0.08); --accent-06:rgba(255,211,0,0.06);
-    }
-    html { scroll-behavior: smooth; }
-    html,body{height:100%}
-    body{background:linear-gradient(180deg,var(--bg-1),var(--bg-2));color:#fff;font-family:Inter,system-ui,Arial,sans-serif; overflow-x:hidden}
-    .glow { box-shadow: 0 6px 30px -10px rgba(255,211,0,0.08), 0 0 30px rgba(255,211,0,0.03) inset; }
-    .accent-text{ color: var(--accent); }
+    <!-- Tailwind Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    /* Button diagonal sweep */
-    .btn-accent{
-      position:relative;
-      overflow:hidden;
-      background: linear-gradient(180deg, rgba(255,211,0,0.12), rgba(255,211,0,0.06));
-      border:1px solid rgba(255,211,0,0.12);
-      color:var(--accent);
-      transition: color .4s ease;
-      z-index:0;
-    }
-    .btn-accent::before{
-      content:"";
-      position:absolute;
-      top:0; left:-100%; width:200%; height:100%;
-      background: linear-gradient(120deg, transparent 30%, #fff 50%, transparent 70%);
-      transform: skewX(-20deg);
-      transition: left .6s ease;
-      z-index:-1;
-    }
-    .btn-accent:hover::before{ left:0; }
-    .btn-accent:hover{ color:#000; }
+    <!-- AOS Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
-    .soft-card{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); }
-    .accent-overlay{ background: radial-gradient(circle at 20% 10%, var(--accent-06), transparent 35%); }
+    <style>
+      :root {
+        --bg-1:#060606; --bg-2:#0b0b0b; --card:#0f0f10; --muted:rgba(255,255,255,0.55);
+        --accent:#FFD300; --accent-08:rgba(255,211,0,0.08); --accent-06:rgba(255,211,0,0.06);
+      }
+      html { scroll-behavior: smooth; }
+      html,body{height:100%}
+      body{
+        background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
+        color:#fff;
+        font-family:Inter,system-ui,Arial,sans-serif;
+        overflow-x:hidden
+      }
 
-    /* --- Entrance Animations --- */
-    @keyframes fadeUp { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
-    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
-    @keyframes slideInLeft { from{opacity:0; transform:translateX(-40px);} to{opacity:1; transform:translateX(0);} }
-    @keyframes slideInRight { from{opacity:0; transform:translateX(40px);} to{opacity:1; transform:translateX(0);} }
+      .glow { box-shadow: 0 6px 30px -10px rgba(255,211,0,0.08), 0 0 30px rgba(255,211,0,0.03) inset; }
+      .accent-text{ color: var(--accent); }
 
-    .fade-up{ animation: fadeUp 1s ease forwards; }
-    .fade-in{ animation: fadeIn 1.2s ease forwards; }
-    .slide-left{ animation: slideInLeft 1s ease forwards; }
-    .slide-right{ animation: slideInRight 1s ease forwards; }
+      /* Button diagonal sweep */
+      .btn-accent{
+        position:relative;
+        overflow:hidden;
+        background: linear-gradient(180deg, rgba(255,211,0,0.12), rgba(255,211,0,0.06));
+        border:1px solid rgba(255,211,0,0.12);
+        color:var(--accent);
+        transition: color .4s ease;
+        z-index:0;
+      }
+      .btn-accent::before{
+        content:"";
+        position:absolute;
+        top:0; left:-100%; width:200%; height:100%;
+        background: linear-gradient(120deg, transparent 30%, #fff 50%, transparent 70%);
+        transform: skewX(-20deg);
+        transition: left .6s ease;
+        z-index:-1;
+      }
+      .btn-accent:hover::before{ left:0; }
+      .btn-accent:hover{ color:#000; }
 
-    /* Product card hover */
-    .product-card{ transition: transform .35s ease, box-shadow .35s ease; }
-    .product-card:hover{ transform: translateY(-6px); box-shadow: 0 8px 25px rgba(255,211,0,0.12); }
-    .product-card img{ transition: transform .5s ease; }
-    .product-card:hover img{ transform: scale(1.05); }
+      .soft-card{
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+        border:1px solid rgba(255,255,255,0.04);
+      }
+      .accent-overlay{ background: radial-gradient(circle at 20% 10%, var(--accent-06), transparent 35%); }
 
-    /* Overlay for products and banners */
-    .hover-overlay {
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.75));
-      opacity:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:left;
-      padding:1.25rem;
-      transition:opacity .36s ease, transform .36s ease;
-      transform: translateY(6px);
-      color: #fff;
-      pointer-events: none;
-    }
-    .hover-overlay .inner {
-      max-height: 80%;
-      overflow-y: auto;
-      width: 100%;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,211,0,0.8) rgba(255,255,255,0.08);
-    }
-    .hover-overlay .inner::-webkit-scrollbar { width: 6px; }
-    .hover-overlay .inner::-webkit-scrollbar-track { background: rgba(255,255,255,0.08); border-radius: 4px; }
-    .hover-overlay .inner::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--accent), rgba(255,211,0,0.75)); border-radius: 4px; }
-    .hover-overlay .inner::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+      /* Product card hover */
+      .product-card{ transition: transform .35s ease, box-shadow .35s ease; }
+      .product-card:hover{ transform: translateY(-6px); box-shadow: 0 8px 25px rgba(255,211,0,0.12); }
+      .product-card img{ transition: transform .5s ease; }
+      .product-card:hover img{ transform: scale(1.05); }
 
-    .hover-overlay h4 { margin: 0 0 .4rem 0; font-size: 1rem; font-weight: 700; color: #fff; }
-    .hover-overlay p { margin: 0; font-size: 0.9rem; line-height:1.35; color: rgba(255,255,255,0.95); }
+      /* Overlay for products and banners */
+      .hover-overlay {
+        position:absolute;
+        inset:0;
+        background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.75));
+        opacity:0;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        text-align:left;
+        padding:1.25rem;
+        transition:opacity .36s ease, transform .36s ease;
+        transform: translateY(6px);
+        color: #fff;
+        pointer-events: none;
+      }
+      .hover-overlay .inner {
+        max-height: 80%;
+        overflow-y: auto;
+        width: 100%;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255,211,0,0.8) rgba(255,255,255,0.08);
+      }
+      .hover-overlay .inner::-webkit-scrollbar { width: 6px; }
+      .hover-overlay .inner::-webkit-scrollbar-track { background: rgba(255,255,255,0.08); border-radius: 4px; }
+      .hover-overlay .inner::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--accent), rgba(255,211,0,0.75)); border-radius: 4px; }
+      .hover-overlay .inner::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-    .product-card:hover .hover-overlay,
-    .banner:hover .hover-overlay { opacity:1; transform: translateY(0); }
+      .hover-overlay h4 { margin: 0 0 .4rem 0; font-size: 1rem; font-weight: 700; color: #fff; }
+      .hover-overlay p { margin: 0; font-size: 0.9rem; line-height:1.35; color: rgba(255,255,255,0.95); }
 
-    /* Showcase hover */
-    .banner{ position:relative; transition: transform .45s ease, box-shadow .45s ease; }
-    .banner:hover{ transform: scale(1.03); box-shadow: 0 12px 40px rgba(255,211,0,0.10); }
+      .product-card:hover .hover-overlay,
+      .banner:hover .hover-overlay { opacity:1; transform: translateY(0); }
 
-    /* Fix text overlap in banners */
-    .banner h3, .banner p { position: relative; z-index: 2; }
-    .banner .btn-accent { margin-top: 1rem; position: relative; z-index: 2; }
+      /* Showcase hover */
+      .banner{ position:relative; transition: transform .45s ease, box-shadow .45s ease; }
+      .banner:hover{ transform: scale(1.03); box-shadow: 0 12px 40px rgba(255,211,0,0.10); }
 
-    /* search box */
-    .header-search {
-      flex: 1 1 360px;
-      display:flex;
-      justify-content:center;
-      padding: 0 1rem;
-    }
-    .header-search input {
-      width: 380px;
-      max-width: 48vw;
-      min-width: 180px;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: #fff;
-      padding: .6rem .9rem;
-      border-radius: 10px;
-      font-size: .95rem;
-      outline: none;
-      transition: box-shadow .28s ease, border-color .28s ease, transform .18s ease;
-      backdrop-filter: blur(4px);
-    }
-    .header-search input::placeholder { color: rgba(255,255,255,0.42); }
-    .header-search input:focus {
-      box-shadow: 0 6px 30px rgba(255,211,0,0.06), 0 0 12px rgba(255,211,0,0.04) inset;
-      border-color: var(--accent);
-      transform: translateY(-1px);
-    }
+      /* Fix text overlap in banners */
+      .banner h3, .banner p { position: relative; z-index: 2; }
+      .banner .btn-accent { margin-top: 1rem; position: relative; z-index: 2; }
 
-    /* smaller screens adjustments */
-    @media (max-width: 900px) {
-      .header-search { display: none; }
-    }
-  </style>
-</head>
-<body>
-  <!-- Header -->
-  <header class="max-w-7xl mx-auto px-6 py-6 flex items-center gap-4 fade-in">
-    <!-- left: logo -->
-    <div class="flex items-center gap-3 flex-none">
-      <div class="w-10 h-10 rounded-md flex items-center justify-center glow" style="background: linear-gradient(180deg, rgba(255,211,0,0.12), rgba(255,211,0,0.06))">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M12 2L13.8 8.6L20.8 9.4L15.6 13.9L17 20.6L12 17.5L7 20.6L8.4 13.9L3.2 9.4L10.2 8.6L12 2Z" stroke="white" stroke-opacity="0.9" stroke-width="0.6"/>
-        </svg>
+      /* search box */
+      .header-search {
+        flex: 1 1 360px;
+        display:flex;
+        justify-content:center;
+        padding: 0 1rem;
+      }
+      .header-search input {
+        width: 380px;
+        max-width: 48vw;
+        min-width: 180px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.06);
+        color: #fff;
+        padding: .6rem .9rem;
+        border-radius: 10px;
+        font-size: .95rem;
+        outline: none;
+        transition: box-shadow .28s ease, border-color .28s ease, transform .18s ease;
+        backdrop-filter: blur(4px);
+      }
+      .header-search input::placeholder { color: rgba(255,255,255,0.42); }
+      .header-search input:focus {
+        box-shadow: 0 6px 30px rgba(255,211,0,0.06), 0 0 12px rgba(255,211,0,0.04) inset;
+        border-color: var(--accent);
+        transform: translateY(-1px);
+      }
+
+      /* smaller screens adjustments */
+      @media (max-width: 900px) {
+        .header-search { display: none; }
+      }
+
+      /* Mobile menu */
+      #mobileMenu { display:none; }
+      #mobileMenu.active {
+        display:block;
+        animation: slideDown 0.35s ease forwards;
+      }
+      @keyframes slideDown {
+        from { opacity:0; transform:translateY(-10px);}
+        to { opacity:1; transform:translateY(0);}
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="max-w-7xl mx-auto px-6 py-6 flex items-center gap-4" data-aos="fade-down">
+      <!-- Logo -->
+      <div class="flex items-center gap-3 flex-none">
+        <div class="w-10 h-10 rounded-md flex items-center justify-center glow" style="background: linear-gradient(180deg, rgba(255,211,0,0.12), rgba(255,211,0,0.06))">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M12 2L13.8 8.6L20.8 9.4L15.6 13.9L17 20.6L12 17.5L7 20.6L8.4 13.9L3.2 9.4L10.2 8.6L12 2Z" stroke="white" stroke-opacity="0.9" stroke-width="0.6"/>
+          </svg>
+        </div>
+        <div>
+          <div class="text-sm font-bold tracking-wide">VANTAGE</div>
+          <div class="text-[11px] text-[rgba(255,255,255,0.45)] -mt-0.5">Performance Gear</div>
+        </div>
       </div>
-      <div>
-        <div class="text-sm font-bold tracking-wide">VANTAGE</div>
-        <div class="text-[11px] text-[rgba(255,255,255,0.45)] -mt-0.5">Performance Gear</div>
+
+      <!-- Search -->
+      <div class="header-search">
+        <input type="search" placeholder="Search gear..." aria-label="Search products">
       </div>
+
+      <!-- Nav -->
+      <nav class="hidden md:flex items-center gap-6 text-sm text-[rgba(255,255,255,0.7)] flex-none">
+        <a href="#products" class="hover:text-white">Products</a>
+        <a href="#collections" class="hover:text-white">Collections</a>
+        <a href="#community" class="hover:text-white">Community</a>
+        <a href="#support" class="hover:text-white">Support</a>
+        <button class="ml-4 px-3 py-2 rounded-md btn-accent">Sign In</button>
+      </nav>
+
+      <!-- Hamburger -->
+      <div class="md:hidden ml-auto">
+        <button id="hamburger" class="p-2 rounded-md bg-[rgba(255,255,255,0.02)]">☰</button>
+      </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="md:hidden bg-[#0f0f10] border-t border-[rgba(255,255,255,0.08)] px-6 py-4 space-y-3">
+      <a href="#products" class="block">Products</a>
+      <a href="#collections" class="block">Collections</a>
+      <a href="#community" class="block">Community</a>
+      <a href="#support" class="block">Support</a>
+      <button class="w-full px-3 py-2 rounded-md btn-accent">Sign In</button>
     </div>
 
-    <!-- center: search -->
-    <div class="header-search">
-      <input type="search" placeholder="Search gear..." aria-label="Search products">
-    </div>
-
-    <!-- right: nav -->
-    <nav class="hidden md:flex items-center gap-6 text-sm text-[rgba(255,255,255,0.7)] flex-none">
-      <a href="#products" class="hover:text-white">Products</a>
-      <a href="#collections" class="hover:text-white">Collections</a>
-      <a href="#community" class="hover:text-white">Community</a>
-      <a href="#support" class="hover:text-white">Support</a>
-      <button class="ml-4 px-3 py-2 rounded-md btn-accent">Sign In</button>
-    </nav>
-
-    <!-- mobile hamburger -->
-    <div class="md:hidden ml-auto">
-      <button id="hamburger" class="p-2 rounded-md bg-[rgba(255,255,255,0.02)]">☰</button>
-    </div>
-  </header>
-
-  <main class="max-w-7xl mx-auto px-6 pb-20">
-    <!-- Hero -->
-    <section class="grid md:grid-cols-2 gap-8 items-center pt-12 fade-up">
-      <div class="space-y-6">
-        <div class="inline-flex items-center gap-3">
-          <span class="px-3 py-1 rounded-full text-[11px] bg-[var(--accent-08)] text-[var(--accent)] font-semibold">NEW ARRIVALS</span>
-          <span class="text-xs text-[rgba(255,255,255,0.45)]">Limited drops • premium build</span>
-        </div>
-        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Precision hardware for the competitive edge — reimagined in neon yellow.</h1>
-        <p class="text-[15px] text-[rgba(255,255,255,0.65)] max-w-xl">Sleek silhouettes, tactile controls, and tuned performance. Handcrafted components designed for players and creators who demand accuracy and comfort.</p>
-        <div class="flex items-center gap-4">
-          <a href="#products" class="inline-flex items-center gap-3 px-5 py-3 rounded-lg font-semibold btn-accent hover:scale-[1.02] transition">Shop Now</a>
-          <a href="#collections" class="text-sm text-[rgba(255,255,255,0.55)] hover:text-white">Explore Collections →</a>
-        </div>
-        <div class="flex items-center gap-6 mt-4">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-md flex items-center justify-center" style="background:var(--accent-06)">🔥</div>
-            <div>
-              <div class="text-sm font-semibold">Performance Tuned</div>
-              <div class="text-xs text-[rgba(255,255,255,0.5)]">Optimized for low-latency play</div>
-            </div>
+    <main class="max-w-7xl mx-auto px-6 pb-20">
+      <!-- Hero -->
+      <section class="grid md:grid-cols-2 gap-8 items-center pt-12" data-aos="fade-up">
+        <div class="space-y-6">
+          <div class="inline-flex items-center gap-3">
+            <span class="px-3 py-1 rounded-full text-[11px] bg-[var(--accent-08)] text-[var(--accent)] font-semibold">NEW ARRIVALS</span>
+            <span class="text-xs text-[rgba(255,255,255,0.45)]">Limited drops • premium build</span>
           </div>
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-md flex items-center justify-center" style="background:var(--accent-06)">🎧</div>
-            <div>
-              <div class="text-sm font-semibold">Studio Grade Audio</div>
-              <div class="text-xs text-[rgba(255,255,255,0.5)]">Designed for clarity & depth</div>
-            </div>
+          <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Precision hardware for the competitive edge — reimagined in neon yellow.</h1>
+          <p class="text-[15px] text-[rgba(255,255,255,0.65)] max-w-xl">Sleek silhouettes, tactile controls, and tuned performance. Handcrafted components designed for players and creators who demand accuracy and comfort.</p>
+          <div class="flex items-center gap-4">
+            <a href="#products" class="inline-flex items-center gap-3 px-5 py-3 rounded-lg font-semibold btn-accent hover:scale-[1.02] transition">Shop Now</a>
+            <a href="#collections" class="text-sm text-[rgba(255,255,255,0.55)] hover:text-white">Explore Collections →</a>
           </div>
         </div>
-      </div>
 
-      <div class="relative slide-right">
-        <div class="aspect-[16/10] rounded-2xl soft-card overflow-hidden glow">
-          <div class="absolute inset-0 accent-overlay" aria-hidden></div>
-          <img src="pcitures/hero_product.jpg" alt="Hero product" class="object-cover w-full h-full opacity-95"/>
+        <div class="relative" data-aos="fade-left">
+          <div class="aspect-[16/10] rounded-2xl soft-card overflow-hidden glow">
+            <div class="absolute inset-0 accent-overlay" aria-hidden></div>
+            <img src="pcitures/hero_product.jpg" alt="Hero product" class="object-cover w-full h-full opacity-95"/>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Products grid -->
-    <section id="products" class="mt-12 fade-up">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold">Featured Products</h2>
-        <div class="text-sm text-[rgba(255,255,255,0.55)]">Hand-picked for precision & comfort</div>
-      </div>
+      <!-- Products grid -->
+      <section id="products" class="mt-12" data-aos="fade-up">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold">Featured Products</h2>
+          <div class="text-sm text-[rgba(255,255,255,0.55)]">Hand-picked for precision & comfort</div>
+        </div>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Vector X7 -->
-        <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
-          <div class="aspect-[16/10] flex items-center justify-center relative">
-            <img src="pcitures/mice_for_sentinel_gaming_website.jpg" alt="Vector X7" class="object-cover w-full h-full"/>
-            <div class="hover-overlay">
-              <div class="inner">
-                <h4>Vector X7</h4>
-                <p>
-                  The Vector X7 is engineered for competitive gameplay, featuring an ultra-light, feather-light frame for rapid, fatigue-free movement.
-                  It's equipped with a lightning-fast sensor, boasting an impressive 18,000 DPI resolution, ensuring pixel-perfect accuracy and instantaneous
-                  response for every flick and aim.
-                </p>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Vector X7 -->
+          <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]" data-aos="zoom-in">
+            <div class="aspect-[16/10] flex items-center justify-center relative">
+              <img src="pcitures/mice_for_sentinel_gaming_website.jpg" alt="Vector X7" class="object-cover w-full h-full"/>
+              <div class="hover-overlay">
+                <div class="inner">
+                  <h4>Vector X7</h4>
+                  <p>The Vector X7 is engineered for competitive gameplay, featuring an ultra-light, feather-light frame for rapid, fatigue-free movement. It's equipped with a lightning-fast sensor, boasting an impressive 18,000 DPI resolution.</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="p-5">
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-semibold">Vector X7</h3>
-              <span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">FEATURED</span>
-            </div>
-            <p class="text-xs text-[rgba(255,255,255,0.6)]">Ultra-light, 16000 DPI sensor</p>
-            <div class="flex items-center justify-between mt-2">
-              <div class="font-bold">$129</div>
-              <button class="px-3 py-2 rounded-md btn-accent text-sm font-medium" onclick="buy('Vector X7')">Buy</button>
-            </div>
-          </div>
-        </article>
-
-        <!-- Nova Pro -->
-        <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
-          <div class="aspect-[16/10] flex items-center justify-center relative">
-            <img src="pcitures/Keyboard_picture_for_sentinel_gaming.jpeg" alt="Nova Pro" class="object-cover w-full h-full"/>
-            <div class="hover-overlay">
-              <div class="inner">
-                <h4>Nova Pro</h4>
-                <p>
-                  The Nova Pro is a high-performance mechanical keyboard built for precision and style. It features satisfyingly responsive tactile switches
-                  for a comfortable and deliberate typing or gaming experience. The vibrant per-key RGB lighting allows for deep customization and a dynamic,
-                  immersive aesthetic.
-                </p>
+            <div class="p-5">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-semibold">Vector X7</h3>
+                <span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">FEATURED</span>
+              </div>
+              <p class="text-xs text-[rgba(255,255,255,0.6)]">Ultra-light, 16000 DPI sensor</p>
+              <div class="flex items-center justify-between mt-2">
+                <div class="font-bold">$129</div>
+                <button class="px-3 py-2 rounded-md btn-accent text-sm font-medium" onclick="buy('Vector X7')">Buy</button>
               </div>
             </div>
-          </div>
-          <div class="p-5">
-            <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">Nova Pro</h3><span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">NEW</span></div>
-            <p class="text-xs text-[rgba(255,255,255,0.6)]">Tactile switches, per-key lighting</p>
-            <div class="flex items-center justify-between mt-2"><div class="font-bold">$189</div><button class="px-3 py-2 rounded-md btn-accent" onclick="buy('Nova Pro')">Buy</button></div>
-          </div>
-        </article>
+          </article>
 
-        <!-- Pulsehead II -->
-        <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
-          <div class="aspect-[16/10] flex items-center justify-center relative">
-            <img src="pcitures/headphones_picture_for_sentinel_gaming.jpg" alt="Pulsehead II" class="object-cover w-full h-full"/>
-            <div class="hover-overlay">
-              <div class="inner">
-                <h4>Pulsehead II</h4>
-                <p>
-                  Step into the game with the Pulsehead II headset, delivering rich, immersive spatial audio that allows you to pinpoint enemy locations
-                  and environmental cues with superior accuracy. Communication is crystal clear thanks to the integrated, high-quality noise-cancellation
-                  microphone, ensuring your team hears only you, even in the loudest environments.
-                </p>
+          <!-- Nova Pro -->
+          <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]" data-aos="zoom-in" data-aos-delay="100">
+            <div class="aspect-[16/10] flex items-center justify-center relative">
+              <img src="pcitures/Keyboard_picture_for_sentinel_gaming.jpeg" alt="Nova Pro" class="object-cover w-full h-full"/>
+              <div class="hover-overlay">
+                <div class="inner">
+                  <h4>Nova Pro</h4>
+                  <p>The Nova Pro is a high-performance mechanical keyboard with tactile switches and per-key RGB lighting, built for precision and style.</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="p-5">
-            <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">Pulsehead II</h3><span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">HOT</span></div>
-            <p class="text-xs text-[rgba(255,255,255,0.6)]">Spatial audio, noise-cancel mic</p>
-            <div class="flex items-center justify-between mt-2"><div class="font-bold">$149</div><button class="px-3 py-2 rounded-md btn-accent" onclick="buy('Pulsehead II')">Buy</button></div>
-          </div>
-        </article>
-
-        <!-- Flux Pad -->
-        <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]">
-          <div class="aspect-[16/10] flex items-center justify-center relative">
-            <img src="pcitures/Mouse_pad_sentinel_gaming.jpg" alt="Flux Pad" class="object-cover w-full h-full"/>
-            <div class="hover-overlay">
-              <div class="inner">
-                <h4>Flux Pad (XL)</h4>
-                <p>
-                  The Flux Pad (XL) is the foundational element for smooth, consistent gameplay. Its seamless glide and custom cloth surface is optimized
-                  for both speed and control, making sure your mouse movements are effortless and precise. The extra-large size provides ample room for
-                  low-DPI mouse swings and keyboard placement.
-                </p>
+            <div class="p-5">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-semibold">Nova Pro</h3>
+                <span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">NEW</span>
+              </div>
+              <p class="text-xs text-[rgba(255,255,255,0.6)]">Tactile switches, per-key lighting</p>
+              <div class="flex items-center justify-between mt-2">
+                <div class="font-bold">$189</div>
+                <button class="px-3 py-2 rounded-md btn-accent text-sm font-medium" onclick="buy('Nova Pro')">Buy</button>
               </div>
             </div>
-          </div>
-          <div class="p-5">
-            <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">Flux Pad (XL)</h3><span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">ESSENTIAL</span></div>
-            <p class="text-xs text-[rgba(255,255,255,0.6)]">Seamless glide & custom cloth</p>
-            <div class="flex items-center justify-between mt-2"><div class="font-bold">$49</div><button class="px-3 py-2 rounded-md btn-accent" onclick="buy('Flux Pad (XL)')">Buy</button></div>
-          </div>
-        </article>
-      </div>
-    </section>
+          </article>
 
-    <!-- Showcase / Banner -->
-    <section id="collections" class="mt-16 grid md:grid-cols-2 gap-6 items-stretch">
-      <div class="banner rounded-2xl overflow-hidden soft-card relative p-8 flex flex-col justify-end slide-left" style="background-image:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.6)), url('pcitures/Vantage_Black_Edition.jpg'); background-size:cover; background-position:center; min-height:260px;">
-        <div class="hover-overlay">
-          <div class="inner">
-            <h4>Vantage Black Edition</h4>
-            <p>This high-end system is designed for the serious professional gamer who values a sophisticated look. The Vantage Black Edition offers a refined aesthetic with a focus on premium materials and tactile finishes. It features reduced RGB lighting—shown here as a subtle, fiery orange—for a deliberately discreet pro setup that minimizes distraction while delivering top-tier performance. This is a Limited Drop, meaning it's an exclusive and rare configuration.</p>
+          <!-- Pulsehead II -->
+          <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]" data-aos="zoom-in" data-aos-delay="200">
+            <div class="aspect-[16/10] flex items-center justify-center relative">
+              <img src="pcitures/headphones_picture_for_sentinel_gaming.jpg" alt="Pulsehead II" class="object-cover w-full h-full"/>
+              <div class="hover-overlay">
+                <div class="inner">
+                  <h4>Pulsehead II</h4>
+                  <p>The Pulsehead II headset delivers rich, immersive spatial audio and crystal-clear team comms with a noise-cancelling mic.</p>
+                </div>
+              </div>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-semibold">Pulsehead II</h3>
+                <span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">HOT</span>
+              </div>
+              <p class="text-xs text-[rgba(255,255,255,0.6)]">Spatial audio, noise-cancel mic</p>
+              <div class="flex items-center justify-between mt-2">
+                <div class="font-bold">$149</div>
+                <button class="px-3 py-2 rounded-md btn-accent text-sm font-medium" onclick="buy('Pulsehead II')">Buy</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Flux Pad -->
+          <article class="product-card relative bg-[#0f0f10] rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.04)]" data-aos="zoom-in" data-aos-delay="300">
+            <div class="aspect-[16/10] flex items-center justify-center relative">
+              <img src="pcitures/Mouse_pad_sentinel_gaming.jpg" alt="Flux Pad (XL)" class="object-cover w-full h-full"/>
+              <div class="hover-overlay">
+                <div class="inner">
+                  <h4>Flux Pad (XL)</h4>
+                  <p>The Flux Pad XL provides smooth, consistent glide for both speed and control — perfect for low-DPI players and extended desk setups.</p>
+                </div>
+              </div>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-semibold">Flux Pad (XL)</h3>
+                <span class="text-[10px] px-2 py-1 rounded-full bg-[var(--accent-08)] text-[var(--accent)]">ESSENTIAL</span>
+              </div>
+              <p class="text-xs text-[rgba(255,255,255,0.6)]">Seamless glide & custom cloth</p>
+              <div class="flex items-center justify-between mt-2">
+                <div class="font-bold">$49</div>
+                <button class="px-3 py-2 rounded-md btn-accent text-sm font-medium" onclick="buy('Flux Pad (XL)')">Buy</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Showcase / Banner -->
+      <section id="collections" class="mt-16 grid md:grid-cols-2 gap-6 items-stretch">
+        <div class="banner rounded-2xl overflow-hidden soft-card relative p-8 flex flex-col justify-end" style="background-image:url('pcitures/Vantage_Black_Edition.jpg'); background-size:cover; background-position:center; min-height:260px;" data-aos="fade-right">
+          <div class="text-xs text-[rgba(255,255,255,0.6)]">LIMITED DROP</div>
+          <h3 class="text-2xl font-bold">Vantage Black Edition</h3>
+          <p class="text-sm text-[rgba(255,255,255,0.65)] max-w-md mt-2">A refined aesthetic, reduced RGB, premium materials and tactile finishes for a discreet pro setup.</p>
+          <div class="mt-4"><a class="inline-block px-4 py-2 rounded-md btn-accent">Discover</a></div>
+        </div>
+
+        <div class="banner rounded-2xl overflow-hidden soft-card p-8 flex flex-col justify-end" style="background-image:url('pcitures/join_the_squad.jpg'); background-size:cover; background-position:center; min-height:260px;" data-aos="fade-left">
+          <div class="text-xs text-[rgba(255,255,255,0.6)]">COMMUNITY</div>
+          <h3 class="text-2xl font-bold">Join the Squad</h3>
+          <p class="text-sm text-[rgba(255,255,255,0.65)] max-w-md mt-2">Share clips, setup photos, and feedback. Get early access to drops and beta firmware.</p>
+          <div class="mt-4"><a class="inline-block px-4 py-2 rounded-md btn-accent">Sign Up</a></div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer id="support" class="mt-20 border-t border-[rgba(255,255,255,0.04)] pt-8 pb-12 text-sm text-[rgba(255,255,255,0.55)]" data-aos="fade-up">
+        <div class="flex flex-col md:flex-row md:justify-between gap-6 max-w-7xl mx-auto px-6">
+          <div class="space-y-2">
+            <div class="font-bold">VANTAGE</div>
+            <div>Performance Gear • © 2025 Vantage Labs</div>
+          </div>
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:gap-8">
+            <div class="flex gap-6">
+              <a href="#">Privacy</a>
+              <a href="#">Terms</a>
+              <a href="#">Support</a>
+            </div>
+           <div class="flex gap-4 text-xl">
+  <!-- Twitter / X -->
+  <a href="#" aria-label="Twitter" class="hover:text-white transition">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
+      <path d="M22.46 6c-.77.35-1.6.59-2.46.7a4.25 4.25 0 001.86-2.34 8.3 8.3 0 01-2.67 1.02 4.17 4.17 0 00-7.12 3.8 11.84 11.84 0 01-8.6-4.36 4.16 4.16 0 001.29 5.56A4.11 4.11 0 012.8 9v.05a4.18 4.18 0 003.34 4.09c-.47.13-.96.15-1.44.06a4.18 4.18 0 003.9 2.9A8.37 8.37 0 012 19.54 11.8 11.8 0 008.29 21c7.55 0 11.68-6.26 11.68-11.68 0-.18-.01-.35-.02-.53A8.33 8.33 0 0022.46 6z"/>
+    </svg>
+  </a>
+
+  <!-- Instagram -->
+  <a href="#" aria-label="Instagram" class="hover:text-white transition">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
+      <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.8-2.9a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"/>
+    </svg>
+  </a>
+
+  <!-- Discord -->
+  <a href="#" aria-label="Discord" class="hover:text-white transition">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
+      <path d="M20 4.4A19.9 19.9 0 0015.9 3l-.5 1.1a18.1 18.1 0 00-6.8 0L8.1 3A19.9 19.9 0 004 4.4C2.3 7.6 1.6 10.7 1.8 13.8A19.9 19.9 0 008 20l.9-2.5c.3.1.7.3 1.2.4a12.7 12.7 0 004 0c.5-.1.9-.3 1.2-.4L16 20a19.9 19.9 0 006.2-6.2c.3-3.1-.5-6.2-2.2-9.4zM9.5 14.6c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2c1.1 0 2 .9 2 2.2 0 1.2-.9 2.2-2 2.2zm5 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2c1.1 0 2 .9 2 2.2 0 1.2-.9 2.2-2 2.2z"/>
+    </svg>
+  </a>
+
+  <!-- YouTube -->
+  <a href="#" aria-label="YouTube" class="hover:text-white transition">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
+      <path d="M21.8 8.2s-.2-1.5-.8-2.1c-.7-.8-1.5-.8-1.9-.9-2.7-.2-6.8-.2-6.8-.2h-.1s-4.1 0-6.8.2c-.4 0-1.2.1-1.9.9-.6.6-.8 2.1-.8 2.1S3 9.9 3 11.6v.8c0 1.7.2 3.4.2 3.4s.2 1.5.8 2.1c.7.8 1.6.8 2 1 1.5.1 6.6.2 6.6.2s4.1 0 6.8-.2c.4 0 1.2-.1 1.9-.9.6-.6.8-2.1.8-2.1s.2-1.7.2-3.4v-.8c0-1.7-.2-3.4-.2-3.4zM10 14.7V9.3l5.2 2.7-5.2 2.7z"/>
+    </svg>
+  </a>
+</div>          
           </div>
         </div>
-        <div class="text-xs text-[rgba(255,255,255,0.6)]">LIMITED DROP</div>
-        <h3 class="text-2xl font-bold">Vantage Black Edition</h3>
-        <p class="text-sm text-[rgba(255,255,255,0.65)] max-w-md mt-2">A refined aesthetic, reduced RGB, premium materials and tactile finishes for a discreet pro setup.</p>
-        <div class="mt-4"><a class="inline-block px-4 py-2 rounded-md btn-accent">Discover</a></div>
-      </div>
+      </footer>
+    </main>
 
-      <div class="banner rounded-2xl overflow-hidden soft-card p-8 flex flex-col justify-end slide-right" style="background-image:url('pcitures/join_the_squad.jpg'); background-size:cover; background-position:center; min-height:260px;">
-        <div class="hover-overlay">
-          <div class="inner">
-            <h4>Community</h4>
-            <p>This is an invitation to become part of the brand's vibrant gaming community. By joining the squad, you can share clips, setup photos, and feedback with fellow gamers and enthusiasts. Membership also provides exclusive perks, including early access to product drops (like the Vantage Black Edition) and beta firmware, ensuring you're always ahead of the curve.</p>
-          </div>
-        </div>
-        <div class="text-xs text-[rgba(255,255,255,0.6)]">COMMUNITY</div>
-        <h3 class="text-2xl font-bold">Join the Squad</h3>
-        <p class="text-sm text-[rgba(255,255,255,0.65)] max-w-md mt-2">Share clips, setup photos, and feedback. Get early access to drops and beta firmware.</p>
-        <div class="mt-4"><a class="inline-block px-4 py-2 rounded-md btn-accent">Sign Up</a></div>
-      </div>
-    </section>
+    <!-- JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 800,
+        easing: 'ease-out',
+        once: true
+      });
 
-    <!-- Footer -->
-    <footer id="support" class="mt-20 border-t border-[rgba(255,255,255,0.04)] pt-8 pb-12 text-sm text-[rgba(255,255,255,0.55)] fade-in">
-      <div class="flex flex-col md:flex-row md:justify-between gap-6 max-w-7xl mx-auto px-6">
-        <div class="space-y-2">
-          <div class="font-bold">VANTAGE</div>
-          <div>Performance Gear • © 2025 Vantage Labs</div>
-        </div>
-        <div class="flex gap-6">
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Support</a>
-        </div>
-      </div>
-    </footer>
-  </main>
+      document.getElementById('hamburger')?.addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.toggle('active');
+      });
 
-  <script>
-    document.getElementById('hamburger')?.addEventListener('click', ()=> alert('Mobile menu placeholder'));
-    function buy(name){
-      alert('Added to cart (mock): ' + name + '\n(This is a prototype demo)');
-    }
-  </script>
-</body>
+      function buy(name){
+        alert('Added to cart (mock): ' + name + '\n(This is a prototype demo)');
+      }
+    </script>
+  </body>
 </html>
